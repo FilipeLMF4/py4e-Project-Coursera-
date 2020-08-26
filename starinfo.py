@@ -126,5 +126,3 @@ if err != 1 :
 
 cur_1.close()
 cur.close()
-
-#print(data)
