@@ -39,7 +39,11 @@ while True :
         sval=input('How many stars to import: ')
         if len(sval) < 1 :
             break
-        many = int(sval)
+        try :
+            many = int(sval)
+        except:
+            print('Invalid number.')
+            continue
 
     if starID != 0 and count == 0 :
         print('Restarting data extraction at star HD', starID)
