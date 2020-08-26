@@ -26,4 +26,5 @@ To succesfully run the project, the following steps have to be done in order:
 * * *
 ***Please Note:*** 
 * Because it gathers data from the Web, an Internet connection is needed. Note that it might get costly if you do not have unlimited broadband! I accept no responsibility for any additional expense associated with this project.
+* Unfortunately, Wikisky does not have information on every star listed in the catalogue, and this is an issue I only ran into after commiting some hours into the project, so I decided to run with it as is. In the future, I may try to add the missing information from a different data source.
 * The project is not complete! I have not yet implemented all the funcionalities I intend this to have.
