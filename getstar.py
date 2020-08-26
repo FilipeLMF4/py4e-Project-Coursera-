@@ -32,6 +32,7 @@ if starID == None :
 
 many = 0
 count = 0
+acount = 0
 badid=list()
 
 while True :
@@ -50,7 +51,8 @@ while True :
 
     starID = starID + 1
     many = many - 1
-
+    acount=acount+1
+    
     surl = base_url + '/search?star=HD' + str(starID)
 
     #Check for valid information on URL
@@ -66,18 +68,9 @@ while True :
         badid.append(starID)
         cur.execute('''INSERT OR IGNORE INTO Stars_Raw(id,url,xml)
             VALUES (?,?,NULL)''', (starID,surl))
-        if len(badid)>20 :
-            check1=badid[-1]-badid[-2]
-            check2=badid[-2]-badid[-3]
-            check3=badid[-3]-badid[-4]
-            check4=badid[-4]-badid[-5]
-            check5=badid[-5]-badid[-6]
-            if check1==1 and check2==1 and check3==1 and check4==1 and check5==1:
-                print('=====Too many consecutive bad attempts. Quitting======')
-                break
+        if starID>359083 :
+            print('=====End of Catalogue Reached. Quitting=====')
         continue
-
-
 
     data = uh.read().decode()
     #print(data)
@@ -90,6 +83,7 @@ while True :
     if count % 50 == 0 : conn.commit()
     if count % 100 == 0 : time.sleep(5)
 
-print(len(badid), 'unretrieved stars:', badid)
+print(len(badid), 'unretrieved stars in', acount)
+#print(badid)
 conn.commit()
 cur.close()
