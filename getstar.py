@@ -32,7 +32,7 @@ if starID == None :
 
 many = 0
 count = 0
-acount = 0
+acount=0
 badid=list()
 
 while True :
@@ -46,30 +46,35 @@ while True :
             print('Invalid number.')
             continue
 
-    if starID != 0 and count == 0 :
+    if starID != 0 and acount == 0 :
         print('Restarting data extraction at star HD', starID)
 
     starID = starID + 1
     many = many - 1
     acount=acount+1
-    
+
     surl = base_url + '/search?star=HD' + str(starID)
 
     #Check for valid information on URL
     try :
         uh = urllib.request.urlopen(surl, context=ctx)
         count = count + 1
+
     except KeyboardInterrupt :
         print('Process interrupted by user...')
         break
-        
+
     except:
+        if starID>359083 :
+            print('=====End of Catalogue Reached. Quitting=====')
+            print(len(badid), 'unretrieved stars in', acount)
+            conn.commit()
+            cur.close()
+            quit()
         print('Unable to retrieve info on star HD', starID)
         badid.append(starID)
         cur.execute('''INSERT OR IGNORE INTO Stars_Raw(id,url,xml)
             VALUES (?,?,NULL)''', (starID,surl))
-        if starID>359083 :
-            print('=====End of Catalogue Reached. Quitting=====')
         continue
 
     data = uh.read().decode()
@@ -78,7 +83,6 @@ while True :
 
     cur.execute('''INSERT OR IGNORE INTO Stars_Raw(id,url,xml)
     VALUES (?,?,?)''', (starID,surl,data))
-
 
     if count % 50 == 0 : conn.commit()
     if count % 100 == 0 : time.sleep(5)
